@@ -56,4 +56,4 @@ services:
       REACT_APP_BASE_URL: http://backend:5000/api # This will override BASE_URL in frontend App.js if REACT_APP_BASE_URL is used
 
 volumes:
-  postgres_data: # Define the named volume for PostgreSQL data persistence
+  postgres_data: # Define the named volume for PostgreSQL dat 

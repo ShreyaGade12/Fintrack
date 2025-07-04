@@ -6,7 +6,7 @@ const User = require('../models/User');
 const Expense = require('../models/Expense'); // Ensure Expense model is imported
 const Budget = require('../models/Budget');
 const Goal = require('../models/Goal');
-const { Op } = require('sequelize'); // Import Op for Sequelize operators
+const { Op } = require('sequelize'); // Import Op for Sequelize 
 
 // Load GEMINI_API_KEY from environment variables
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;

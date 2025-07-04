@@ -31,7 +31,7 @@ COPY --from=builder /app/build /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose the port Nginx listens on (default HTTP port)
+# Expose the port Nginx listens on  
 EXPOSE 80
 
 # Start Nginx when the container launches

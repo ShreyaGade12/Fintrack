@@ -84,7 +84,7 @@ const AuthProvider = ({ children }) => {
             storageBucket: "your-project-id.appspot.com",
             messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
             appId: "YOUR_APP_ID",
-            // measurementId: "G-XXXXXXXXXX"// Include if you use Firebase Analytics, otherwise omit
+            // measurementId: "G-XXXXXXXXXX"// Include if you use Firebase Analytics it
           };
 
       const app = initializeApp(firebaseConfig);
