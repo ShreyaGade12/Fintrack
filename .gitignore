@@ -8,7 +8,7 @@
     Backend/.env
     finance-tracker-frontend/.env
 
-    # Firebase Service Account Key (VERY IMPORTANT: DO NOT COMMIT THIS)
+    # Firebase Service Account Key (VERY IMPORTANT: DO NOT COMMIT THI )
     Backend/serviceAccountKey.json
 
     # Build outputs for frontend
