@@ -1,0 +1,6 @@
+    node_modules
+    build
+    .env
+    npm-debug.log
+    # Any other local development files you don't want in the image
+    

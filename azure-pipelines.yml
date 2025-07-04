@@ -1,0 +1,90 @@
+# azure-pipelines.yml
+# Placed in the root of your Git repository (e.g., C:\Projects\Finance-Track\azure-pipelines.yml)
+
+trigger:
+  - main # Trigger the pipeline on pushes to the 'main' branch
+
+variables:
+  # Docker image names (adjust as needed)
+  backendImageName: 'finance-track-backend'
+  frontendImageName: 'finance-track-frontend'
+  
+  # Container Registry details
+  # Replace with your Azure Container Registry (ACR) name or Docker Hub username
+  # For ACR: myacrregistry.azurecr.io
+  # For Docker Hub: your_dockerhub_username
+  imageRegistry: 'your_container_registry_name_or_dockerhub_username' 
+
+  # Azure DevOps Service Connection name for your container registry
+  # Create this in Project Settings -> Service connections
+  # For ACR: Give it a name like 'acr-connection'
+  # For Docker Hub: Give it a name like 'dockerhub-connection' (type Docker Registry)
+  dockerRegistryServiceConnection: 'your_registry_service_connection_name'
+
+# Pool where the agent will run (e.g., Azure-hosted agent)
+pool:
+  vmImage: 'ubuntu-latest' # Use a Linux agent for Docker builds
+
+stages:
+- stage: BuildAndPush
+  displayName: 'Build and Push Docker Images'
+  jobs:
+  - job: Build
+    displayName: 'Build and Push'
+    steps:
+    - checkout: self # Checkout the source code from the repository
+
+    - task: Docker@2
+      displayName: 'Build and Push Backend Image'
+      inputs:
+        containerRegistry: '$(dockerRegistryServiceConnection)' # Service connection to your registry
+        repository: '$(imageRegistry)/$(backendImageName)' # Full image name: registry/imagename
+        command: 'buildAndPush' # Build and push command
+        Dockerfile: 'Backend/Dockerfile' # Path to your backend Dockerfile relative to repo root
+        tags: |
+          $(Build.BuildId) # Tag with unique build ID
+          latest # Tag as latest
+
+    - task: Docker@2
+      displayName: 'Build and Push Frontend Image'
+      inputs:
+        containerRegistry: '$(dockerRegistryServiceConnection)' # Service connection to your registry
+        repository: '$(imageRegistry)/$(frontendImageName)' # Full image name: registry/imagename
+        command: 'buildAndPush' # Build and push command
+        Dockerfile: 'finance-tracker-frontend/Dockerfile' # Path to your frontend Dockerfile relative to repo root
+        tags: |
+          $(Build.BuildId) # Tag with unique build ID
+          latest # Tag as latest
+
+# - stage: Deploy
+#   displayName: 'Deploy to Environment'
+#   dependsOn: BuildAndPush # This stage depends on the build and push stage completing successfully
+#   jobs:
+#   - job: DeployApp
+#     displayName: 'Deploy Application'
+#     pool:
+#       vmImage: 'ubuntu-latest' # Or a specific agent pool for your deployment target
+#     steps:
+#     - checkout: self # Checkout code for deployment scripts/manifests
+
+#     # --- Deployment steps (example placeholders) ---
+#     # This section would vary greatly depending on your deployment target:
+#     # - Azure Web App: Use AzureWebApp@1 task
+#     # - Azure Kubernetes Service (AKS): Use kubectl@1 task with your K8s manifests
+#     # - Azure Container Instances (ACI): Use AzureCLI@2 task to deploy ACI
+#     # - Virtual Machine: Use SSH task to run deployment scripts on VM
+
+#     # Example for AKS deployment (requires K8s manifests and service connection)
+#     # - task: KubernetesManifest@1
+#     #   displayName: 'Deploy to AKS'
+#     #   inputs:
+#     #     action: 'deploy'
+#     #     kubernetesServiceConnection: 'your-aks-service-connection' # Service connection to your AKS cluster
+#     #     namespace: 'default'
+#     #     manifests: |
+#     #       kubernetes/backend-deployment.yaml
+#     #       kubernetes/frontend-deployment.yaml
+#     #     containers: |
+#     #       $(imageRegistry)/$(backendImageName):$(Build.BuildId)
+#     #       $(imageRegistry)/$(frontendImageName):$(Build.BuildId)
+#     # --- End Deployment Steps ---

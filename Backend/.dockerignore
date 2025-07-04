@@ -1,0 +1,6 @@
+    node_modules
+    npm-debug.log
+    .env
+    serviceAccountKey.json # If you're embedding it directly, don't ignore. But generally, you should ignore and pass via secrets.
+    # If you have a separate build directory for backend, add it here
+    

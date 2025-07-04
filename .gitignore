@@ -1,0 +1,26 @@
+    # Node.js dependencies
+    node_modules/
+    Backend/node_modules/
+    finance-tracker-frontend/node_modules/
+
+    # Environment variables
+    .env
+    Backend/.env
+    finance-tracker-frontend/.env
+
+    # Firebase Service Account Key (VERY IMPORTANT: DO NOT COMMIT THIS)
+    Backend/serviceAccountKey.json
+
+    # Build outputs for frontend
+    finance-tracker-frontend/build/
+
+    # Logs
+    *.log
+    npm-debug.log*
+    yarn-debug.log*
+    yarn-error.log*
+
+    # OS generated files
+    .DS_Store
+    .vscode/
+    

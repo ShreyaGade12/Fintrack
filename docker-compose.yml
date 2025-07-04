@@ -1,0 +1,59 @@
+# docker-compose.yml
+# Placed in the root of your project: C:\Projects\Finance-Track\
+
+version: '3.8' # Specify the Docker Compose file format version
+
+services:
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:15-alpine # Use a specific version of PostgreSQL
+    container_name: finance-track-postgres-db
+    ports:
+      - "5432:5432" # Map host port 5432 to container port 5432
+    environment:
+      POSTGRES_DB: fintrack_db # Name of the database to create
+      POSTGRES_USER: myuser # Database user
+      POSTGRES_PASSWORD: mypassword # Database password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persist data to a named volume
+    restart: unless-stopped # Always restart unless explicitly stopped
+
+  # Backend Service
+  backend:
+    build:
+      context: ./Backend # Path to your backend directory containing the Dockerfile
+      dockerfile: Dockerfile # Name of the Dockerfile in the backend directory
+    container_name: finance-track-backend-app
+    ports:
+      - "5000:5000" # Map host port 5000 to container port 5000
+    env_file:
+      - ./Backend/.env # Path to your backend's .env file
+    depends_on:
+      - postgres # Backend depends on the postgres service
+    restart: unless-stopped # Always restart unless explicitly stopped
+    environment:
+      # Override DATABASE_URL for the backend to connect to the 'postgres' service within the Docker network
+      # This is crucial: 'postgres' is the service name defined above.
+      DATABASE_URL: postgres://myuser:mypassword@postgres:5432/fintrack_db
+
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./finance-tracker-frontend # Path to your frontend directory containing the Dockerfile
+      dockerfile: Dockerfile # Name of the Dockerfile in the frontend directory
+    container_name: finance-track-frontend-app
+    ports:
+      - "80:80" # Map host port 80 to container port 80 (access via http://localhost)
+      # You could also use - "3000:80" to access it via http://localhost:3000
+    depends_on:
+      - backend # Frontend depends on the backend service to be running
+    restart: unless-stopped # Always restart unless explicitly stopped
+    environment:
+      # IMPORTANT: Update the BASE_URL for the frontend to point to the backend service name
+      # Within the Docker Compose network, services can communicate using their service names.
+      # So, 'backend' is the hostname for the backend service.
+      REACT_APP_BASE_URL: http://backend:5000/api # This will override BASE_URL in frontend App.js if REACT_APP_BASE_URL is used
+
+volumes:
+  postgres_data: # Define the named volume for PostgreSQL data persistence
