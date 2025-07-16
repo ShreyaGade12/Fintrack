@@ -113,7 +113,7 @@ FinTrack uses a modular, microservices-oriented architecture:
 
 #### Clone the repository:
 ```bash
-git clone https://github.com/AnujGadekar1/FinTrack-AI-Finance-App.git
+git clone https://github.com/ 
 cd FinTrack-AI-Finance-App
 ```
 
@@ -127,7 +127,7 @@ Create `.env` file:
 ```env
 PORT=5000
 CLIENT_URL=http://localhost:80
-DATABASE_URL=postgres://myuser:mypassword@postgres: /fintrack 
+DATABASE_URL=postgres://myuser:mypard@postgres: /fintrack 
 JWT_SECRET=your_super_secret_jwt_key_here
 GEMINI_API_KEY=YOUR_GENERATED_GEMINI_API_KEY_HERE
 FIREBASE_SERVICE_ACCOUNT_KEY={}  # JSON as one line
@@ -211,9 +211,7 @@ This project is licensed under the **MIT License**. See the LICENSE file for det
 
 ---
 
-## 📧 Contact
-**Anuj Gadekar**  
-🔗 [GitHub Profile](https://github.com/AnujGadekar1)  
+   
  
 
-**Project Link:** [FinTrack-AI-Finance-App](https://github.com/AnujGadekar1/FinTrack-AI-Finance-App)
+ 
